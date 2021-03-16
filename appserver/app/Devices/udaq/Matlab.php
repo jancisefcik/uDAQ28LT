@@ -10,7 +10,7 @@ use App\Devices\Contracts\DeviceDriverContract;
 
 use App\Devices\Scripts\StartScript;
 use App\Devices\Scripts\StopScript;
-use App\Devices\Scripts\ReadScript;
+use App\Devices\Scripts\ChangeScript;
 
 class Matlab extends AbstractDevice implements DeviceDriverContract {
 
@@ -21,10 +21,9 @@ class Matlab extends AbstractDevice implements DeviceDriverContract {
      * @var array
      */
      protected $scriptPaths = [
-        "read"	     => "udaq/matlab/read.py",
-        "stop"      => "udaq/matlab/stop.py",
-        "start"	=> "udaq/matlab/start.py"
-     //    "change"	=> "udaq/matlab/change.py"
+        "stop"  => "udaq/matlab/stop.py",
+        "start"	=> "udaq/matlab/start.py",
+        "change"	=> "udaq/matlab/change.py"
     ];
 
 
@@ -60,16 +59,15 @@ class Matlab extends AbstractDevice implements DeviceDriverContract {
           $script->run();
      }
 
-     protected function read($input)
+     protected function change($input)
      {
-          $script = new ReadScript(
-                    $this->scriptPaths["read"],
-                    $this->device
-               );
-
+          $script = new ChangeScript(
+               $this->scriptPaths["change"],
+               $input,
+               $this->device
+          );
+     
           $script->run();
-
-          return $script->getOutput();
      }
 
 }

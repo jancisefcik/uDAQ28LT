@@ -59,12 +59,20 @@ def app(args):
     matlab_instance.workspace['in_led'] = float(args["in_led"])  # Input value for LED diode
 
     # Regulator specific values.
-    matlab_instance.workspace['reg_output'] = float(args["reg_output"])  # Control signal value
+    
     matlab_instance.workspace['reg_target'] = float(args["reg_target"])  # Target value for regulator
     matlab_instance.workspace['Kc'] = float(args["Kc"])  # Kc parameter of regulator
     matlab_instance.workspace['Ti'] = float(args["Ti"])  # Ti parameter of regulator
-    matlab_instance.workspace['U_min'] = float(args["U_min"])  # U_min filter parameter
-    matlab_instance.workspace['U_max'] = float(args["U_max"])  # U_max filter parameter
+    matlab_instance.workspace['U_min'] = float(args["U_min"])  # U_min limiter parameter
+    matlab_instance.workspace['U_max'] = float(args["U_max"])  # U_max limiter parameter
+
+    # Output variable for regulation.
+    if args["reg_output"] == "temperature":
+        matlab_instance.workspace['reg_output'] = float(1)
+    elif args["reg_output"] == "light intensity":
+        matlab_instance.workspace['reg_output'] = float(2)
+    elif args["reg_output"] == "fan rpm":
+        matlab_instance.workspace['reg_output'] = float(3)
 
     # Control signal for regulation, i.e. action variable.
     if args["reg_signal"] == "bulb":
