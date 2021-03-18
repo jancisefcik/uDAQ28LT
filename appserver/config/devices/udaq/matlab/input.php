@@ -5,21 +5,21 @@ return [
         [
             "name"	=>	"in_bulb",
             "rules"	=>	"required",
-            "title"	=>	"Bulb volt. (0-100)%",
-            "placeholder"	=>	50,
+            "title"	=>	"Bulb pwr <0-20> W",
+            "placeholder"	=>	20,
             "type"	=>	"text"
         ],
         [
             "name"	=>	"in_fan",
             "rules"	=>	"required",
-            "title"	=>	"Fan volt. (0-100)%",
-            "placeholder"	=>	70,
+            "title"	=>	"Fan rpm <0-6000> Rpm",
+            "placeholder"	=>	2000,
             "type"	=>	"text"
         ],
         [
             "name"	=>	"in_led",
             "rules"	=>	"required",
-            "title"	=>	"LED volt. (0-100)%",
+            "title"	=>	"LED input <0-100>%",
             "placeholder"	=>	60,
             "type"	=>	"text"
         ],
@@ -95,22 +95,22 @@ return [
         [
             "name"	=>	"in_bulb",
             "rules"	=>	"required",
-            "title"	=>	"Bulb volt. (0-100)%",
-            "placeholder"	=>	0,
+            "title"	=>	"Bulb pwr <0-20> W",
+            "placeholder"	=>	20,
             "type"	=>	"text"
         ],
         [
             "name"	=>	"in_fan",
             "rules"	=>	"required",
-            "title"	=>	"Fan volt. (0-100)%",
-            "placeholder"	=>	0,
+            "title"	=>	"Fan rpm <0-6000> Rpm",
+            "placeholder"	=>	2000,
             "type"	=>	"text"
         ],
         [
             "name"	=>	"in_led",
             "rules"	=>	"required",
-            "title"	=>	"LED volt. (0-100)%",
-            "placeholder"	=>	0,
+            "title"	=>	"LED input <0-100>%",
+            "placeholder"	=>	60,
             "type"	=>	"text"
         ],
         [

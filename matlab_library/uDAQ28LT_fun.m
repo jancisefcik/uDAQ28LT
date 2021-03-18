@@ -216,9 +216,8 @@ function Start(block)
     % Execute external script to set custom baud rate for COM port.
     % This has to be done this way, because the uDAQ28 device requires unusual transmission speed.
     % The set(s, 'BaudRate', %d) function cannot assign 256000 kbit/s baud rate to serial device.
-    % Path must be absolute or MATLAB path must be set to folder that contains /baudrate directory. 
-    command = strcat('./baudrate/set_baudrate', sprintf(' %s %d', com_port, baud_rate)); 
-    system(command);
+    % Path must be absolute or MATLAB path must be set to folder that contains /baudrate directory.
+    setbaud(com_port, baud_rate);
 
 %end Start
 
@@ -249,10 +248,14 @@ function Outputs(block)
     % SEND CMD ------------------------------------------------------------
     % Send values for light bulb, fan and LED diode.
 
-    % All values should be 0-100 (percent)
-    bulb = fix_input(block.InputPort(1).Data);
-    fan = fix_input(block.InputPort(2).Data);
-    led = fix_input(block.InputPort(3).Data);
+    % Values should be in right interval for each variable:
+    % bulb = <0,20>
+    % fan = <0,6000>
+    % led = <0,100>
+    % If number is outside interval, the upper limit is set as input.
+    bulb = fix_input(block.InputPort(1).Data, "bulb");
+    fan = fix_input(block.InputPort(2).Data, "fan");
+    led = fix_input(block.InputPort(3).Data, "led");
 
     msg = sprintf('S%d,%d,%d\n', bulb, fan, led);
 

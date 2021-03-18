@@ -5,10 +5,10 @@ function res = recalculate_output(plant_output)
     % Constants to recalculate output values from device.
     % 'C_temp' and 'C_intens' are from previous implementations.
     % 'C_amp' and 'C_rpm' are values computed for purposes of this work personally.
-    C_temp = 28.6705; 
+    C_temp = 28.67; 
     C_intens = 40.95;
-    C_amp = 50.6975;
-    C_rpm = 1.422;
+    C_amp = 49.47;
+    C_rpm = 1.27;
     
     % Read values from string into matrix.
     values = sscanf(plant_output, '%g %g %g %g %g %g');
