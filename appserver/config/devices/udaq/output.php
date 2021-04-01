@@ -24,5 +24,17 @@ return [
     [
         "name"	=>	"o_fanrpm",
         "title"	=>	"Fan speed (rpm)"
+    ],
+    [
+        "name"	=>	"in_bulb",
+        "title"	=>	"Input bulb"
+    ],
+    [
+        "name"	=>	"in_fan",
+        "title"	=>	"Input Fan"
+    ],
+    [
+        "name"	=>	"in_led",
+        "title"	=>	"Input LED"
     ]
 ];
