@@ -1,5 +1,5 @@
 % Local function to recalculate input values for bulb, fan and led.
-% Copyright (c) 2020 Jan Sefcik.
+% Copyright (c) 2021 Jan Sefcik.
 
 function res = fix_input(in_value, type)
     switch type

@@ -293,6 +293,9 @@ function Outputs(block)
     block.OutputPort(6).Data = r_vals(6);
 
     % Write correctly formatted data into output text file.
+    
+    % TODO: na ziaciatok informaciu o case a na koniec append tri vstupy.
+    
     format_spec = '%2.3f,%2.3f,%2.3f,%2.3f,%2.3f,%2.3f\n';  % Specify format of written data.
     file_id = fopen(output_path, 'a+');  % Open output path file.
     fprintf(file_id, format_spec, r_vals);  % Write experiment data to file.

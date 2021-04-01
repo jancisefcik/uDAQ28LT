@@ -3,6 +3,6 @@
 
 function setbaud(serialport, baudrate)
     % Execute external script to set serialport baud rate.
-    command = strcat('./baudrate/set_baudrate ', sprintf(' %s %d',serialport, baudrate)); 
+    command = strcat('./utils/baudrate/set_baudrate ', sprintf(' %s %d',serialport, baudrate)); 
     system(command);
 end

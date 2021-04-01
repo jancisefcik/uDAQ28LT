@@ -1,5 +1,5 @@
 % Local function to recalculate output values from uDAQ28/LT Thermal Plant.
-% Copyright (c) 2020 Jan Sefcik.
+% Copyright (c) 2021 Jan Sefcik.
 
 function res = recalculate_output(plant_output)
     % Constants to recalculate output values from device.
@@ -10,7 +10,7 @@ function res = recalculate_output(plant_output)
     C_amp = 49.47;
     C_rpm = 1.27;
     
-    % Read values from string into matrix.
+    % Parse values from device output string.
     values = sscanf(plant_output, '%g %g %g %g %g %g');
     % Recalculate output values with constants for actual real-life values.
     r_temp = values(1) / C_temp;
