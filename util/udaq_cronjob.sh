@@ -7,12 +7,12 @@
 # INFO: Add this script to crontab by this:
 # 1) $ chmod +x udaq_cronjob.sh
 # 2) $ crontab -e
-# Add the following line to the end of crontab and leave newline...
-# */10 */1 * * * DISPLAY=:0 /home/$USER/cronjobs/udaq_cronjob.sh
+# 3) Add the following line to the end of crontab and leave newline...
+# */10 */1 * * * DISPLAY=:0 /home/$USER/Documents/uDAQ28LT/util/udaq_cronjob.sh
 # ...and replace $USER with current username.
 #
-# This supposes that 'udaq_cronjob.sh' will be present in cronjobs directory in
-# user's home folder. Log file will be then in cronjobs/udaq_log directory.
+# This supposes that 'udaq_cronjob.sh' is called from repository, which has been pulled inside
+# user's home, under Documents directory. Log file will be created in ~/cronjobs/udaq_log directory.
 #
 # Created on 2021/01/28 by Jan Sefcik - STU Bratislava
 
