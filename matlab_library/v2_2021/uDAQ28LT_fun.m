@@ -77,13 +77,13 @@ block.SimStateCompliance = 'DefaultSimState';
 
 block.RegBlockMethod('CheckParameters', @CheckPrms);
 block.RegBlockMethod('SetInputPortSamplingMode',@SetInputPortSamplingMode);
-block.RegBlockMethod('PostPropagationSetup',    @DoPostPropSetup);
+% block.RegBlockMethod('PostPropagationSetup',    @DoPostPropSetup);
 block.RegBlockMethod('InitializeConditions', @InitializeConditions);
 block.RegBlockMethod('Start', @Start);
-block.RegBlockMethod('Outputs', @Outputs);     % Required
-block.RegBlockMethod('Update', @Update);
-block.RegBlockMethod('Derivatives', @Derivatives);
-block.RegBlockMethod('Terminate', @Terminate); % Required
+block.RegBlockMethod('Outputs', @Outputs); % Required
+% block.RegBlockMethod('Update', @Update);
+% block.RegBlockMethod('Derivatives', @Derivatives);
+block.RegBlockMethod('Terminate', @Terminate);
 
 %end setup
 
@@ -99,14 +99,14 @@ function CheckPrms(block)
     end
     
     % The second parameter should be 256000, i.e. 256 kbit/s for uDAQ28LT.
-    if ~isequal(baud,256000)
+    if ~isnumeric(baud) || ~isequal(baud,256000)
         error('BaudRate parameter for the uDAQ28LT should be 256 kbit/s!')
     end
     
     % The third parameter should be scalar, numeric, real, nonzero.
-    if ~isscalar(Ts) && ~isnumeric(Ts) && ~isreal(Ts) && Ts == 0
+    if ~isscalar(Ts) || ~isnumeric(Ts) || ~isreal(Ts) || Ts == 0
         error('Ts parameter should be scalar, numeric, real, nonzero!')
-    end     
+    end
 %end
 
 %%
@@ -277,7 +277,6 @@ function Outputs(block)
     % READ VAL ------------------------------------------------------------
     
     % Recalculate values retireved from the device.
-    % The recalculate_output function is inside utils directory.
     r_vals = recalculate_output(values);
     
     block.OutputPort(1).Data = r_vals(1);
@@ -335,7 +334,7 @@ function Terminate(block)
     % Command to turn off the bulb, fan and LED diode.
     writeline(s_port_udaq, "S0,0,0\n");
     % SEND CMD ------------------------------------------------------------
-    % Force and delete serial port.
+    % Force close and delete serial port.
     delete(s_port_udaq);
 %end Terminate
 

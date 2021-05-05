@@ -3,21 +3,21 @@
 return [
     "start"	=>	[
         [
-            "name"	=>	"in_bulb",
+            "name"	=>	"bulb",
             "rules"	=>	"required",
             "title"	=>	"Bulb pwr <0-20> W",
             "placeholder"	=>	20,
             "type"	=>	"text"
         ],
         [
-            "name"	=>	"in_fan",
+            "name"	=>	"fan",
             "rules"	=>	"required",
             "title"	=>	"Fan rpm <0-6000> Rpm",
             "placeholder"	=>	2000,
             "type"	=>	"text"
         ],
         [
-            "name"	=>	"in_led",
+            "name"	=>	"led",
             "rules"	=>	"required",
             "title"	=>	"LED input <0-100>%",
             "placeholder"	=>	60,
@@ -93,21 +93,21 @@ return [
     ],
     "change"	=>	[
         [
-            "name"	=>	"in_bulb",
+            "name"	=>	"bulb",
             "rules"	=>	"required",
             "title"	=>	"Bulb pwr <0-20> W",
             "placeholder"	=>	20,
             "type"	=>	"text"
         ],
         [
-            "name"	=>	"in_fan",
+            "name"	=>	"fan",
             "rules"	=>	"required",
             "title"	=>	"Fan rpm <0-6000> Rpm",
             "placeholder"	=>	2000,
             "type"	=>	"text"
         ],
         [
-            "name"	=>	"in_led",
+            "name"	=>	"led",
             "rules"	=>	"required",
             "title"	=>	"LED input <0-100>%",
             "placeholder"	=>	60,

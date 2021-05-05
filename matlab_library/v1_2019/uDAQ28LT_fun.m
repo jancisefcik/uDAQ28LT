@@ -1,6 +1,7 @@
-function udaq28LTfn(block)
+function udaq28LT_fun(block)
 % udaq28LTfn A Level-2 MATLAB S-Function for the uDAQ28/LT thermal plant device.
 % Created from template located in [matlabroot,'/toolbox/simulink/blocks/msfuntmpl_basic.m'].
+% Uses older MATLAB serial interface for connecting to the serial port.
 
 %   Copyright 2003-2018 The MathWorks, Inc.
 %   Copyright 2020 Jan Sefcik
@@ -76,13 +77,13 @@ block.SimStateCompliance = 'DefaultSimState';
 
 block.RegBlockMethod('CheckParameters', @CheckPrms);
 block.RegBlockMethod('SetInputPortSamplingMode',@SetInputPortSamplingMode);
-block.RegBlockMethod('PostPropagationSetup',    @DoPostPropSetup);
+% block.RegBlockMethod('PostPropagationSetup',    @DoPostPropSetup);
 block.RegBlockMethod('InitializeConditions', @InitializeConditions);
 block.RegBlockMethod('Start', @Start);
-block.RegBlockMethod('Outputs', @Outputs);     % Required
-block.RegBlockMethod('Update', @Update);
-block.RegBlockMethod('Derivatives', @Derivatives);
-block.RegBlockMethod('Terminate', @Terminate); % Required
+block.RegBlockMethod('Outputs', @Outputs);  % Required
+% block.RegBlockMethod('Update', @Update);
+% block.RegBlockMethod('Derivatives', @Derivatives);
+block.RegBlockMethod('Terminate', @Terminate);
 
 %end setup
 
@@ -98,14 +99,14 @@ function CheckPrms(block)
     end
     
     % The second parameter should be 256000, i.e. 256 kbit/s for uDAQ28LT.
-    if ~isequal(baud,256000)
+    if ~isnumeric(baud) || ~isequal(baud,256000)
         error('BaudRate parameter for the uDAQ28LT should be 256 kbit/s!')
     end
     
     % The third parameter should be scalar, numeric, real, nonzero.
-    if ~isscalar(Ts) && ~isnumeric(Ts) && ~isreal(Ts) && Ts == 0
+    if ~isscalar(Ts) || ~isnumeric(Ts) || ~isreal(Ts) || Ts == 0
         error('Ts parameter should be scalar, numeric, real, nonzero!')
-    end     
+    end
 %end
 
 %%
@@ -151,7 +152,7 @@ function InitializeConditions(block)
 %%   C MEX counterpart: mdlStart
 %%
 function Start(block)
-    global s;    
+    global s_port_udaq;    
 
     port_param = block.DialogPrm(1).Data;
     [port, output_path] = strtok(port_param,',');
@@ -175,7 +176,7 @@ function Start(block)
     end
 
     % Check, if device is already connected.
-    if isa(s, 'serial') && isvalid(s) && strcmpi(get(s,'Status'),'open')
+    if isa(s_port_udaq, 'serial') && isvalid(s_port_udaq) && strcmpi(get(s_port_udaq,'Status'),'open')
         disp(['It looks like TOS is already connected to port ' com_port ]);
         disp('Delete the object to force disconnection');
         disp('before attempting a connection to a different port.');
@@ -192,31 +193,27 @@ function Start(block)
     end
     
     % Setup uDAQ28 device for serial communication
-    s = serial(com_port);  % Assign serial device on com_port to global variable.
-    set(s, 'Terminator', 'LF');  % Set Terminator to 'LF'.
+    s_port_udaq = serial(com_port);  % Assign serial device on com_port to global variable.
+    set(s_port_udaq, 'Terminator', 'LF');  % Set Terminator to 'LF'.
     % Following parameters are not required to be explicitly set, because are set by default.
     % But for further purposes or other reasons, here you are...
-    set(s, 'Parity', 'none');  % Set Parity to 'none'.
-    set(s, 'DataBits', 8);  % Set DataBits to '8'.
-    set(s, 'StopBit', 1);  % Set StopBit to '1'.
-    set(s, 'Timeout',10);  % Set Timeout to '10' seconds.
+    set(s_port_udaq, 'Parity', 'none');  % Set Parity to 'none'.
+    set(s_port_udaq, 'DataBits', 8);  % Set DataBits to '8'.
+    set(s_port_udaq, 'StopBit', 1);  % Set StopBit to '1'.
+    set(s_port_udaq, 'Timeout',5);  % Set Timeout to '10' seconds.
 
     % Try to open serial port.
     try
-        fopen(s);
+        fopen(s_port_udaq);
     catch
-        throw(MSLException(block.BlockHandle, ...
-            'Simulink:Parameters:BlkParamUndefined', ...
-            'Could not open port!\nCheck, if the settings of the COM port and baud rate are correct.'));
-
-        error(['Error: Could not open port: ' com_port]);
-        delete(s);
+        delete(s_port_udaq);
+        disp(err);
+        error('Could not set up serial port!\nCheck, if the settings of the COM port and baud rate are correct.');
     end
 
     % Execute external script to set custom baud rate for COM port.
-    % This has to be done this way, because the uDAQ28 device requires unusual transmission speed.
-    % The set(s, 'BaudRate', %d) function cannot assign 256000 kbit/s baud rate to serial device.
-    % Path must be absolute or MATLAB path must be set to folder that contains /baudrate directory.
+    % It has to be done this way, because the uDAQ28 device requires unusual transmission speed.
+    % The default serialport method cannot assign 256000 kbit/s baud rate on serial device.
     setbaud(com_port, baud_rate);
 
 %end Start
@@ -239,7 +236,7 @@ function SetInputPortSamplingMode(block, idx, fd)
 %%   C MEX counterpart: mdlOutputs
 %%
 function Outputs(block)
-    global s;
+    global s_port_udaq;
 
     port_param = block.DialogPrm(1).Data;
     [~,output_path] = strtok(port_param,',');
@@ -247,8 +244,9 @@ function Outputs(block)
 
     % SEND CMD ------------------------------------------------------------
     % Send values for light bulb, fan and LED diode.
-
-    % Values should be in right interval for each variable:
+    % Device accepts values from interval <0,255> for each variable - bulb, fan, led.
+    % These values are calculated from user's input. According to documentation, user
+    % can input variable values in these intervals:
     % bulb = <0,20>
     % fan = <0,6000>
     % led = <0,100>
@@ -261,24 +259,24 @@ function Outputs(block)
 
     % Try to send data into serial port and device.
     try
-        fprintf(s, '%s', msg);
+        fprintf(s_port_udaq, '%s', msg);
     catch err
+        fclose(s_port_udaq);
+        delete(s_port_udaq);
+        disp(err);
         error(['Error: Unable to send data']);
-        error(['err: ' err]);
-        fclose(s);
-        delete(s);
     end
     % SEND CMD ------------------------------------------------------------
 
     % READ VAL ------------------------------------------------------------
     values = '';
     try
-        values = fscanf(s);        
+        values = fscanf(s_port_udaq);        
     catch err
-        error(['Error: Unable to read data']);
-        error(['err: ' err]);
-        fclose(s);
-        delete(s);
+        fclose(s_port_udaq);
+        delete(s_port_udaq);
+        disp(err);
+        error(['Error: Unable to read data']);        
     end
     % READ VAL ------------------------------------------------------------
     
@@ -292,13 +290,14 @@ function Outputs(block)
     block.OutputPort(5).Data = r_vals(5);
     block.OutputPort(6).Data = r_vals(6);
 
+    % Append input values to the end.
+    out_vals = [r_vals [block.InputPort(1).Data,block.InputPort(2).Data,block.InputPort(3).Data]];
+    
     % Write correctly formatted data into output text file.
-    
-    % TODO: na ziaciatok informaciu o case a na koniec append tri vstupy.
-    
-    format_spec = '%2.3f,%2.3f,%2.3f,%2.3f,%2.3f,%2.3f\n';  % Specify format of written data.
+    % Numbers in format_spec respectively -> 'o_temp,o_ftemp,o_intens,o_fintens,o_fanamp,o_fanrpm,in_bullb,in_fan,in_led'  
+    format_spec = '%2.3f,%2.3f,%2.3f,%2.3f,%2.3f,%2.3f,%2.3f,%2.3f,%2.3f\n';  % Specify format of written data.
     file_id = fopen(output_path, 'a+');  % Open output path file.
-    fprintf(file_id, format_spec, r_vals);  % Write experiment data to file.
+    fprintf(file_id, format_spec, out_vals);  % Write experiment data to file.
     fclose(file_id);  % Close file.
 %end Outputs
 
@@ -333,14 +332,14 @@ function Derivatives(block)
 %%   C MEX counterpart: mdlTerminate
 %%
 function Terminate(block)
-    global s;
+    global s_port_udaq;
 
     % SEND CMD ------------------------------------------------------------
     % Command to turn off the bulb, fan and LED diode.
-    fprintf(s, 'S0,0,0\n');
+    fprintf(s_port_udaq, 'S0,0,0\n');
     % SEND CMD ------------------------------------------------------------
 
-    fclose(s);
-    delete(s);
+    fclose(s_port_udaq);
+    delete(s_port_udaq);
 %end Terminate
 

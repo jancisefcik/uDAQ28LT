@@ -2,7 +2,7 @@
 
 import matlab.engine
 
-def app():
+def stop():
     matlab_instance = matlab.engine.connect_matlab('uDAQ_engine')  # Try directly connect MATLAB
 
     # Check, if there is running Simulink experiment. If not, then exit.
@@ -15,4 +15,4 @@ def app():
 
 
 if __name__ == '__main__':
-   app()
+   stop()

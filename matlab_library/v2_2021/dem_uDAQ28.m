@@ -1,4 +1,5 @@
 % Basic way of sending/receiving data in MATLAB for uDAQ28/LT Thermal Plant
+% using 'serialport' interface available in MATLAB R2019b and higher.
 % Copyright (c) 2021 Jan Sefcik
  
 com = "/dev/ttyUSB0";  % Serial port name.

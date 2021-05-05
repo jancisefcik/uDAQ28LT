@@ -2,39 +2,39 @@
 
 return [
     [
-        "name"	=>	"o_temp",
+        "name"	=>	"temp",
         "title"	=>	"Temperature"
     ],
     [
-        "name"	=>	"o_ftemp",
+        "name"	=>	"f_temp",
         "title"	=>	"Filtered temperature"
     ],
     [
-        "name"	=>	"o_intens",
+        "name"	=>	"intens",
         "title"	=>	"Light intensity"
     ],
     [
-        "name"	=>	"o_fintens",
+        "name"	=>	"f_intens",
         "title"	=>	"Filtered light intensity"
     ],
     [
-        "name"	=>	"o_fanamp",
+        "name"	=>	"fan_amp",
         "title"	=>	"Fan current (Amp)"
     ],
     [
-        "name"	=>	"o_fanrpm",
+        "name"	=>	"fan_rpm",
         "title"	=>	"Fan speed (rpm)"
     ],
     [
-        "name"	=>	"in_bulb",
+        "name"	=>	"bulb",
         "title"	=>	"Input bulb"
     ],
     [
-        "name"	=>	"in_fan",
+        "name"	=>	"fan",
         "title"	=>	"Input Fan"
     ],
     [
-        "name"	=>	"in_led",
+        "name"	=>	"led",
         "title"	=>	"Input LED"
     ]
 ];
