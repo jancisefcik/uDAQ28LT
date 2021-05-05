@@ -35,10 +35,7 @@ def start(args):
     
     # Clear output variables in workspace from previous experiment runs.
     leonardo.info('clearing MATLAB workspace output variables...')
-    leonardo.info(matlab_instance.workspace['outputs'])
-
     matlab_instance.workspace['outputs'] = {'temp':0, 'f_temp':0, 'intens':0, 'f_intens':0, 'fan_amp':0, 'fan_rpm':0}
-    matlab_instance.workspace['simparams'] = {'duration':0}
 
     # Setup workspace variables for next simulation run.
     leonardo.info('setting MATLAB workspace input variables:')
@@ -48,41 +45,45 @@ def start(args):
     # Simulation parameters as port, simulation time, sampling rate.
     matlab_instance.workspace['com'] = port  # COM port and output file
     matlab_instance.workspace['simparams'] = {
-        't_sim':float(args['t_sim'],  # Simulation time
-        'Ts':float(args['s_rate'])/1000  # Sampling rate
+        't_sim':float(args['t_sim']),  # Simulation time
+        'Ts':float(args['s_rate'])/1000,  # Sampling rate
+        'duration':0
         } 
 
     # Input values for system variables - light bulb, fan and LED.
     matlab_instance.workspace['inputs'] = {
-        'fan':float(args['fan'],  # Input value for fan
-        'bulb':float(args['bulb'],  # Input value for light bulb
-        'led':float(args['led']  # Input value for LED diode
+        'fan':float(args['fan']),  # Input value for fan
+        'bulb':float(args['bulb']),  # Input value for light bulb
+        'led':float(args['led'])  # Input value for LED diode
     }
+
+    # Output variable for regulation i.e. wanted value.
+    reg_output = dict()
+    if args['reg_output'] == 'temperature':
+        reg_output = {'reg_output':float(1)}
+    elif args['reg_output'] == 'light intensity':
+        reg_output = {'reg_output':float(2)}
+    elif args['reg_output'] == 'fan rpm':
+        reg_output = {'reg_output':float(3)}
+
+    # Control signal for regulation, i.e. action variable.
+    reg_signal = dict()
+    if args['reg_signal'] == 'bulb':
+        reg_signal = {'reg_signal':float(1)}
+    elif args['reg_signal'] == 'fan':
+        reg_signal = {'reg_signal':float(2)}
+    elif args['reg_signal'] == 'led':
+        reg_signal = {'reg_signal':float(3)}
 
     # Regulator specific values.    
     matlab_instance.workspace['regparams'] = {
+        **reg_signal, **reg_output,  # Merge values for acion variable and desired value
         'reg_target':float(args['reg_target']),  # Target value for regulator
         'Kc':float(args['Kc']),  # Kc parameter of regulator
         'Ti':float(args['Ti']),  # Ti parameter of regulator
         'U_min':float(args['U_min']),  # U_min limiter parameter
         'U_max':float(args['U_max'])  # U_max limiter parameter
     }
-    
-    # Output variable for regulation.
-    if args['reg_output'] == 'temperature':
-        matlab_instance.workspace['regparams'] = {'reg_output':float(1)}
-    elif args['reg_output'] == 'light intensity':
-        matlab_instance.workspace['regparams'] = {'reg_output':float(2)}
-    elif args['reg_output'] == 'fan rpm':
-        matlab_instance.workspace['regparams'] = {'reg_output':float(3)}
-
-    # Control signal for regulation, i.e. action variable.
-    if args['reg_signal'] == 'bulb':
-        matlab_instance.workspace['regparams'] = {'reg_signal':float(1)}
-    elif args['reg_signal'] == 'fan':
-        matlab_instance.workspace['regparams'] = {'reg_signal':float(2)}
-    elif args['reg_signal'] == 'led':
-        matlab_instance.workspace['regparams'] = {'reg_signal':float(3)}
 
     leonardo.info('MATLAB workspace variables set...')
     leonardo.info('trying to run Simuling simulation on uDAQ28LT_system...')

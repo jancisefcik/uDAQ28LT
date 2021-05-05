@@ -24,35 +24,38 @@ def change(args):
 
     # Input values for system variables - light bulb, fan and LED.
     matlab_instance.workspace['inputs'] = {
-        'fan':float(args['fan'],  # Input value for fan
-        'bulb':float(args['bulb'],  # Input value for light bulb
-        'led':float(args['led']  # Input value for LED diode
+        'fan':float(args['fan']),  # Input value for fan
+        'bulb':float(args['bulb']),  # Input value for light bulb
+        'led':float(args['led'])  # Input value for LED diode
     }
 
-    # Regulator specific values.
+    # Output variable for regulation i.e. wanted value.
+    reg_output = dict()
+    if args['reg_output'] == 'temperature':
+        reg_output = {'reg_output':float(1)}
+    elif args['reg_output'] == 'light intensity':
+        reg_output = {'reg_output':float(2)}
+    elif args['reg_output'] == 'fan rpm':
+        reg_output = {'reg_output':float(3)}
+
+    # Control signal for regulation, i.e. action variable.
+    reg_signal = dict()
+    if args['reg_signal'] == 'bulb':
+        reg_signal = {'reg_signal':float(1)}
+    elif args['reg_signal'] == 'fan':
+        reg_signal = {'reg_signal':float(2)}
+    elif args['reg_signal'] == 'led':
+        reg_signal = {'reg_signal':float(3)}
+
+    # Regulator specific values.    
     matlab_instance.workspace['regparams'] = {
+        **reg_signal, **reg_output,  # Merge values for acion variable and desired value
         'reg_target':float(args['reg_target']),  # Target value for regulator
         'Kc':float(args['Kc']),  # Kc parameter of regulator
         'Ti':float(args['Ti']),  # Ti parameter of regulator
         'U_min':float(args['U_min']),  # U_min limiter parameter
         'U_max':float(args['U_max'])  # U_max limiter parameter
     }
-
-    # Output variable for regulation.
-    if args['reg_output'] == 'temperature':
-        matlab_instance.workspace['regparams'] = {'reg_output':float(1)}
-    elif args['reg_output'] == 'light intensity':
-        matlab_instance.workspace['regparams'] = {'reg_output':float(2)}
-    elif args['reg_output'] == 'fan rpm':
-        matlab_instance.workspace['regparams'] = {'reg_output':float(3)}
-
-    # Control signal for regulation, i.e. action variable.
-    if args['reg_signal'] == 'bulb':
-        matlab_instance.workspace['regparams'] = {'reg_signal':float(1)}
-    elif args['reg_signal'] == 'fan':
-        matlab_instance.workspace['regparams'] = {'reg_signal':float(2)}
-    elif args['reg_signal'] == 'led':
-        matlab_instance.workspace['regparams'] = {'reg_signal':float(3)}
 
     matlab_instance.set_param('uDAQ28LT_system', 'SimulationCommand', 'update', nargout=0)
     matlab_instance.quit()

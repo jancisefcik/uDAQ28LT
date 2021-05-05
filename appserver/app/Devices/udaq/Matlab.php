@@ -49,7 +49,7 @@ class Matlab extends AbstractDevice implements DeviceDriverContract {
           $script->run();
      }
 
-     protected function stop()
+     protected function stop($input)
      {
           $script = new StopScript(
                     $this->scriptPaths["stop"],
