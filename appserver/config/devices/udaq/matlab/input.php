@@ -5,22 +5,22 @@ return [
         [
             "name"	=>	"bulb",
             "rules"	=>	"required",
-            "title"	=>	"Bulb pwr <0-20> W",
-            "placeholder"	=>	20,
+            "title"	=>	"Bulb (0-100%)",
+            "placeholder"	=>	0,
             "type"	=>	"text"
         ],
         [
             "name"	=>	"fan",
             "rules"	=>	"required",
-            "title"	=>	"Fan rpm <0-6000> Rpm",
-            "placeholder"	=>	2000,
+            "title"	=>	"Fan (0-100%)",
+            "placeholder"	=>	0,
             "type"	=>	"text"
         ],
         [
             "name"	=>	"led",
             "rules"	=>	"required",
-            "title"	=>	"LED input <0-100>%",
-            "placeholder"	=>	60,
+            "title"	=>	"LED (0-100%)",
+            "placeholder"	=>	0,
             "type"	=>	"text"
         ],
         [
@@ -41,21 +41,21 @@ return [
             "name"	=>	"U_max",
             "rules"	=>	"required",
             "title"	=>	"U max",
-            "placeholder"	=>	80,
+            "placeholder"	=>	100,
             "type"	=>	"text"
         ],
         [
             "name"	=>	"U_min",
             "rules"	=>	"required",
             "title"	=>	"U min",
-            "placeholder"	=>	10,
+            "placeholder"	=>	0,
             "type"	=>	"text"
         ],
         [
             "name"	=>	"reg_target",
             "rules"	=>	"required",
-            "title"	=>	"Reg. target value (C/lx/RPM)",
-            "placeholder"	=>	30,
+            "title"	=>	"Requested value (C/lx/RPM)",
+            "placeholder"	=>	0,
             "type"	=>	"text"
         ],
         [
@@ -95,22 +95,22 @@ return [
         [
             "name"	=>	"bulb",
             "rules"	=>	"required",
-            "title"	=>	"Bulb pwr <0-20> W",
-            "placeholder"	=>	20,
+            "title"	=>	"Bulb (0-100%)",
+            "placeholder"	=>	0,
             "type"	=>	"text"
         ],
         [
             "name"	=>	"fan",
             "rules"	=>	"required",
-            "title"	=>	"Fan rpm <0-6000> Rpm",
-            "placeholder"	=>	2000,
+            "title"	=>	"Fan (0-100%)",
+            "placeholder"	=>	0,
             "type"	=>	"text"
         ],
         [
             "name"	=>	"led",
             "rules"	=>	"required",
-            "title"	=>	"LED input <0-100>%",
-            "placeholder"	=>	60,
+            "title"	=>	"LED (0-100%)",
+            "placeholder"	=>	0,
             "type"	=>	"text"
         ],
         [
@@ -131,7 +131,7 @@ return [
             "name"	=>	"U_max",
             "rules"	=>	"required",
             "title"	=>	"U max",
-            "placeholder"	=>	0,
+            "placeholder"	=>	100,
             "type"	=>	"text"
         ],
         [
@@ -144,7 +144,7 @@ return [
         [
             "name"	=>	"reg_target",
             "rules"	=>	"required",
-            "title"	=>	"Reg. target value (C/lx/RPM)",
+            "title"	=>	"Requested value (C/lx/RPM)",
             "placeholder"	=>	0,
             "type"	=>	"text"
         ],

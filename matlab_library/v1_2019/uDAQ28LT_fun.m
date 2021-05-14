@@ -245,15 +245,15 @@ function Outputs(block)
     % SEND CMD ------------------------------------------------------------
     % Send values for light bulb, fan and LED diode.
     % Device accepts values from interval <0,255> for each variable - bulb, fan, led.
-    % These values are calculated from user's input. According to documentation, user
-    % can input variable values in these intervals:
-    % bulb = <0,20>
-    % fan = <0,6000>
+    % These values are calculated from user's input. User  can input variable values 
+    % in range from 0 to 100% representing 0 to 5 Volt for each variable:
+    % bulb = <0,100>
+    % fan = <0,100>
     % led = <0,100>
     % If number is outside interval, the upper limit is set as input.
-    bulb = fix_input(block.InputPort(1).Data, "bulb");
-    fan = fix_input(block.InputPort(2).Data, "fan");
-    led = fix_input(block.InputPort(3).Data, "led");
+    bulb = fix_input(block.InputPort(1).Data);
+    fan = fix_input(block.InputPort(2).Data);
+    led = fix_input(block.InputPort(3).Data);
 
     msg = sprintf('S%d,%d,%d\n', bulb, fan, led);
 

@@ -25,16 +25,10 @@ mkdir -p $logpath
 
 if !(pgrep matlab > /dev/null)
 then
-  if !(pgrep udaq_cronjob > /dev/null)  # Avoid duplicate run if script was already run.
-  then
-    dtnow=`date`
-    echo "at:$dtnow -- MATLAB is not running. Trying to start..." >> $logfile
-    # Try to run matlab using start_matlab.php script using curl
-    /bin/curl localhost/start_matlab.php &
-  else
-    dtnow=`date`
-    echo "at:$dtnow -- MATLAB is starting." >> $logfile
-  fi
+  dtnow=`date`
+  echo "at:$dtnow -- MATLAB is not running. Trying to start..." >> $logfile
+  # Try to run matlab using start_matlab.php script using curl
+  /bin/curl localhost/start_matlab.php &
 else
   dtnow=`date`
   echo "at:$dtnow -- MATLAB is running. Keep working :)" >> $logfile

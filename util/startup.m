@@ -14,7 +14,6 @@ addpath ~/Documents/uDAQ28LT/matlab_library/v2_2021;
 % addpath ~/Documents/uDAQ28LT/matlab_library/v1_2019;
 
 addpath ~/Documents/uDAQ28LT/matlab_library/utils;  % Add directory with utilities to MATLAB search path.
-load('uDAQ28LT_variables.mat');  % Load Thermal Plant default inputs/outputs, variable names etc.
-load_system("uDAQ28LT_system");  % Load Thermal Plant Simulink system. 
+uDAQ_variables;  % Load Thermal Plant default inputs/outputs attribute values and names.
+load_system("uDAQ28LT_system");  % Load Thermal Plant block schema for Simulink. 
 matlab.engine.shareEngine("uDAQ_engine"); % Convert current MATLAB instance into shared with desired name.
-
