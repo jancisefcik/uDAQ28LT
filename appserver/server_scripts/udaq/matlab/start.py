@@ -47,8 +47,8 @@ def start(args):
     matlab_instance.workspace['simparams'] = {
         't_sim':float(args['t_sim']),  # Simulation time
         'Ts':float(args['s_rate'])/1000,  # Sampling rate
-        'duration':0
-        } 
+        'duration':float(0)  # Sampled duration - output from simulation
+    } 
 
     # Input values for system variables - light bulb, fan and LED.
     matlab_instance.workspace['inputs'] = {

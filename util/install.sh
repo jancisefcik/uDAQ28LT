@@ -144,6 +144,3 @@ sudo npm install
 
 cd $ran_from
 rm rainbow.sh
-
-echoyellow "INSTALACIA A KONFIGURACIA UKONCENA"
-echoyellow "Pre aplikovanie zmien je potrebne sa odhlasit a opatovne prihlasit"

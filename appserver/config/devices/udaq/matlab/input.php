@@ -149,14 +149,6 @@ return [
             "type"	=>	"text"
         ],
         [
-            "name"	=>	"reg_output",
-            "rules"	=>	"required",
-            "title"	=>	"Output variable",
-            "placeholder"	=>	1,
-            "type"	=>	"select",
-            "values" => ["temperature", "light intensity", "fan rpm"]
-        ],
-        [
             "name"	=>	"reg_signal",
             "rules"	=>	"required",
             "title"	=>	"Control signal",

@@ -6,7 +6,7 @@ function res = fix_input(in_value)
         res = round(in_value * 2.55);
     elseif (in_value < 0)
         res = 0;
-    elseif (in_value > 255)
+    elseif (in_value > 100)
         res = 255;
     end
 end
